@@ -1,15 +1,19 @@
 package com.mcnire.sunshine;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -59,7 +63,31 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+
+            String forecastArray[] = {
+                    "Today Snow -10/-15",
+                    "Tomorrow Snowstore",
+                    "Tuesday Cloudy -10/15",
+                    "Wednesday Cloudy -10/15",
+                    "Thursday Cloudy -10/15",
+                    "Friday Cloudy -10/15",
+                    "Saturday Sunny -10/15"
+
+            };
+
+            List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+
+            ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
+                    getActivity(),
+                    R.layout.list_item_forecast,
+                    R.id.list_item_forecast_textview,
+                    weekForecast);
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+            listView.setAdapter(mForecastAdapter);
             return rootView;
         }
     }
