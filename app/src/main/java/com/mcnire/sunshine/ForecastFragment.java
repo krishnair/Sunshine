@@ -51,6 +51,8 @@ public class ForecastFragment extends Fragment {
 
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
+            FetchWeatherTask weatherTask = new FetchWeatherTask();
+            weatherTask.execute();
             return true;
         }
 
@@ -138,6 +140,9 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
+
             } catch (IOException e) {
                 Log.e("ForecastFragment", "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
