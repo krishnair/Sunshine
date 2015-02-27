@@ -100,6 +100,10 @@ public class ForecastFragment extends Fragment {
 
         @Override
         protected Void doInBackground(String... params) {
+            // If the parameter for location is null then return null
+            if(params.length == 0) {
+                return null;
+            }
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
