@@ -35,6 +35,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    private ArrayAdapter<String> mForecastAdapter;
+
     public ForecastFragment() {
     }
 
@@ -84,11 +86,12 @@ public class ForecastFragment extends Fragment {
 
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
-        ArrayAdapter<String> mForecastAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                R.layout.list_item_forecast,
-                R.id.list_item_forecast_textview,
-                weekForecast);
+        mForecastAdapter =
+                new ArrayAdapter<String> (
+                    getActivity(),
+                    R.layout.list_item_forecast,
+                    R.id.list_item_forecast_textview,
+                    weekForecast);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -197,9 +200,13 @@ public class ForecastFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
+            /* Disable the Logging --- Remove later when not needed
             for (String s : resultStrs) {
+
                 Log.v(LOG_TAG, "Forecast entry: " + s);
             }
+            */
+
             return resultStrs;
 
         }
@@ -241,7 +248,10 @@ public class ForecastFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
+
+                /* Disable Logging - Remove Later
                 Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+                */
 
 
                 // Create the request to OpenWeatherMap, and open the connection
@@ -272,7 +282,9 @@ public class ForecastFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
+                /*
                 Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
+                */
 
             } catch (IOException e) {
                 Log.e("ForecastFragment", "Error ", e);
@@ -300,6 +312,18 @@ public class ForecastFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if (result != null) {
+                mForecastAdapter.clear();
+                for (String dayForecastStr : result ) {
+                    mForecastAdapter.add (dayForecastStr);
+                }
+            }
+
+            // New data is now on the server.
         }
 
     }
