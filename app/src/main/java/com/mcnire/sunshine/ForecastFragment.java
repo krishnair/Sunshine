@@ -121,12 +121,13 @@ public class ForecastFragment extends Fragment {
         /**
          * Prepare the weather high/lows for presentation.
          */
-        private String formatHighLows(double high, double low) {
+        private String formatHighLows(double day, double high, double low) {
             // For presentation, assume the user doesn't care about tenths of a degree.
+            long roundedDay = Math.round(day);
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
 
-            String highLowStr = roundedHigh + "/" + roundedLow;
+            String highLowStr = "Current: " + roundedDay + " High: " + roundedHigh + " Low: " + roundedLow;
             return highLowStr;
         }
 
@@ -146,6 +147,7 @@ public class ForecastFragment extends Fragment {
             final String OWM_TEMPERATURE = "temp";
             final String OWM_MAX = "max";
             final String OWM_MIN = "min";
+            final String OWN_DAY = "day";
             final String OWM_DESCRIPTION = "main";
 
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
@@ -193,10 +195,11 @@ public class ForecastFragment extends Fragment {
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+                double daytemp = temperatureObject.getDouble(OWN_DAY);
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
+                highAndLow = formatHighLows(daytemp, high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
